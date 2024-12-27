@@ -118,6 +118,7 @@ public:
 	// These are owned by monado, context is destroyed when these are destroyed
 	class HmdDevice *hmd{nullptr};
 	class ControllerDevice *controller[16]{nullptr};
+	class lighthouse_console *console{nullptr};
 	const u_logging_level log_level;
 
 	~Context();

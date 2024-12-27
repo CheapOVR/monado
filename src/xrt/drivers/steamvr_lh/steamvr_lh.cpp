@@ -11,6 +11,7 @@
 #include <dlfcn.h>
 #include <memory>
 #include <cmath>
+#include <string>
 #include <unordered_map>
 #include <string_view>
 #include <filesystem>
@@ -113,7 +114,9 @@ Context::create(const std::string &steam_install,
 
 Context::Context(const std::string &steam_install, const std::string &steamvr_install, u_logging_level level)
     : settings(steam_install, steamvr_install), resources(level, steamvr_install), log_level(level)
-{}
+{
+	console = new lighthouse_console(steamvr_install + "/tools/lighthouse/bin/linux64/lighthouse_console");
+}
 
 Context::~Context()
 {

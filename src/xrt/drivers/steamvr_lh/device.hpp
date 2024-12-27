@@ -20,6 +20,8 @@
 #include "xrt/xrt_device.h"
 #include "openvr_driver.h"
 
+#include "console_wrapper/lh_console.hpp"
+
 class Context;
 struct InputClass;
 
