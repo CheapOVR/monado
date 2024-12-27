@@ -356,6 +356,7 @@ init_shm(struct ipc_server *s)
 		isdev->body_tracking_supported = xdev->body_tracking_supported;
 		isdev->stage_supported = xdev->stage_supported;
 		isdev->battery_status_supported = xdev->battery_status_supported;
+		isdev->suspend_supported = xdev->suspend_supported;
 
 		// Is this a HMD?
 		if (xdev->hmd != NULL) {
