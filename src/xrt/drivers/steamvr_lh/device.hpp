@@ -77,6 +77,9 @@ public:
 	xrt_result_t
 	get_battery_status(bool *out_present, bool *out_charging, float *out_charge);
 
+	virtual xrt_result_t
+	suspend();
+
 protected:
 	Device(const DeviceBuilder &builder);
 	std::shared_ptr<Context> ctx;
