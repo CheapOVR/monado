@@ -7,6 +7,7 @@
  * @ingroup drv_steamvr_lh
  */
 
+#include <cstddef>
 #include <functional>
 #include <cstring>
 #include <thread>
@@ -767,6 +768,14 @@ Device::handle_property_write(const vr::PropertyWrite_t &prop)
 		if (!this->manufacturer.empty()) {
 			std::snprintf(this->str, std::size(this->str), "%s %s", this->manufacturer.c_str(),
 			              this->model.c_str());
+		}
+		break;
+	}
+	case vr::Prop_ConnectedWirelessDongle_String: {
+		this->dongle_string = std::string(static_cast<char *>(prop.pvBuffer), prop.unBufferSize).c_str();
+		if (!this->dongle_string.empty()) {
+			DEV_DEBUG("Associating dongle %s with device %s", this->dongle_string.c_str(), this->serial);
+			ctx->active_dongles.insert(this->dongle_string);
 		}
 		break;
 	}

@@ -87,6 +87,7 @@ protected:
 	const InputClass *input_class;
 	std::string manufacturer;
 	std::string model;
+	std::string dongle_string;
 	float vsync_to_photon_ns{0.f};
 	bool provides_battery_status{false};
 	bool charging{false};
