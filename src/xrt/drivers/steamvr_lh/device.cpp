@@ -432,8 +432,7 @@ Device::get_battery_status(bool *out_present, bool *out_charging, float *out_cha
 xrt_result_t
 Device::suspend()
 {
-	if (!this->dongle_string.empty())
-	{
+	if (!this->dongle_string.empty()) {
 		this->ctx->console->power_off_dongle(this->dongle_string);
 	}
 	return XRT_SUCCESS;

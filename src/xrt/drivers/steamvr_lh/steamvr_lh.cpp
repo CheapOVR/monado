@@ -36,7 +36,8 @@ namespace {
 
 DEBUG_GET_ONCE_LOG_OPTION(lh_log, "LIGHTHOUSE_LOG", U_LOGGING_INFO)
 DEBUG_GET_ONCE_BOOL_OPTION(lh_load_slimevr, "LH_LOAD_SLIMEVR", false)
-DEBUG_GET_ONCE_BOOL_OPTION(lh_wait_forever, "LH_WAIT_FOREVER", false) // Wait forever on all connected dongles to add devs
+DEBUG_GET_ONCE_BOOL_OPTION(lh_discover_wait_forever, "LH_DISCOVER_WAIT_FOREVER", false)
+// Wait forever on all connected dongles to add devs
 DEBUG_GET_ONCE_NUM_OPTION(lh_discover_wait_ms, "LH_DISCOVER_WAIT_MS", 3000)
 
 static constexpr size_t MAX_CONTROLLERS = 16;
@@ -814,20 +815,21 @@ steamvr_lh_create_devices(struct xrt_system_devices **out_xsysd)
 	std::vector<std::string> connected_dongles = svrs->ctx->console->list_connected_dongles();
 
 	if (connected_dongles.empty()) {
-        U_LOG_IFL_W(level, "No connected dongles found - continuing without waiting for specific devices");
-    } else {
-        U_LOG_IFL_I(level, "Found %zu connected dongles, waiting for their devices to connect...", connected_dongles.size());
-        for (const auto& dongle : connected_dongles) {
-            U_LOG_IFL_D(level, "Expected dongle: %s", dongle.c_str());
-        }
-    }
+		U_LOG_IFL_W(level, "No connected dongles found - continuing without waiting for specific devices");
+	} else {
+		U_LOG_IFL_I(level, "Found %zu connected dongles, waiting for their devices to connect...",
+		            connected_dongles.size());
+		for (const auto &dongle : connected_dongles) {
+			U_LOG_IFL_D(level, "Expected dongle: %s", dongle.c_str());
+		}
+	}
 
 	U_LOG_IFL_I(level, "Lighthouse initialization complete, giving time to setup connected devices...");
 	// RunFrame needs to be called to detect controllers
 	using namespace std::chrono_literals;
 	const auto start_time = std::chrono::steady_clock::now();
 	const auto timeout = 1ms * debug_get_num_option_lh_discover_wait_ms();
-	const bool wait_forever = debug_get_bool_option_lh_wait_forever();
+	const bool wait_forever = debug_get_bool_option_lh_discover_wait_forever();
 
 	// Keep running frames until all devices found or timeout (if not waiting forever)
 	while (true) {

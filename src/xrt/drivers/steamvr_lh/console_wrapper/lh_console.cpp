@@ -1,3 +1,12 @@
+// Copyright 2024, Duncan Spaulding.
+// SPDX-License-Identifier: BSL-1.0
+/*!
+ * @file
+ * @brief  Lighthouse_console wrapper implementation
+ * @author BabbleBones <BabbleBones@protonmail.com>
+ * @ingroup drv_steamvr_lh
+ */
+
 #include "lh_console.hpp"
 #include <cstddef>
 #include <cstring>
@@ -223,7 +232,7 @@ lighthouse_console::parse_dongle_list(const std::string &response)
 std::vector<std::string>
 lighthouse_console::list_connected_dongles()
 {
-	std::vector<std::string> serials = {}; // Zero intialize in case of trouble
+	std::vector<std::string> serials = {}; // Zero initialize in case of trouble
 
 	if (!process_running) {
 		LHC_ERR("lighthouse_console process not running");
@@ -240,11 +249,11 @@ lighthouse_console::list_connected_dongles()
 	return serials;
 }
 
-	/* PLEASE NOTE THIS FUNCTION IS UNRELIABLE FOR PROVING PAIR, RF interference
-	 * can block the signal and device crosstalk as well making it impossible to
-	 * know who is all connected at any given time, rely on the dongles themselves
-	 * ensure the user has paired each present dongle beforehand.
-	 */
+/* PLEASE NOTE THIS FUNCTION IS UNRELIABLE FOR PROVING PAIR, RF interference
+ * can block the signal and device crosstalk as well making it impossible to
+ * know who is all connected at any given time, more reliable to take stock
+ * of all dongles and then wait for each one to find a device.
+ */
 
 std::vector<std::string>
 lighthouse_console::list_paired_dongles()

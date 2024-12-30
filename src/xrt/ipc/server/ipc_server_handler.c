@@ -2266,6 +2266,6 @@ ipc_handle_device_get_battery_status(
 xrt_result_t
 ipc_handle_device_suspend(volatile struct ipc_client_state *ics, uint32_t id)
 {
-    struct xrt_device *xdev = get_xdev(ics, id);
-    return xrt_device_suspend(xdev);
+	struct xrt_device *xdev = get_xdev(ics, id);
+	return xrt_device_suspend(xdev);
 }
