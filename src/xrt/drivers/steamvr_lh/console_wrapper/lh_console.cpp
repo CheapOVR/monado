@@ -349,6 +349,21 @@ lighthouse_console::power_off_dongle(const std::string &serial)
 }
 
 void
+lighthouse_console::identify_dongle(const std::string &serial)
+{
+	if (!process_running) {
+		LHC_ERR("lighthouse_console process not running");
+		return;
+	}
+
+	LHC_INFO("Promping identify from dongle %s", serial.c_str());
+	select_dongle(serial);
+
+	std::string response = execute_command("identifycontroller");
+	LHC_TRACE("Identify response: %s", response.c_str());
+}
+
+void
 lighthouse_console::pair_all_dongles()
 {
 	if (!process_running) {

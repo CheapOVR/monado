@@ -45,6 +45,8 @@ public:
 	unpair_dongle(const std::string &serial);
 	void
 	power_off_dongle(const std::string &serial);
+	void
+	identify_dongle(const std::string &serial);
 
 	// Bulk operations
 	void
