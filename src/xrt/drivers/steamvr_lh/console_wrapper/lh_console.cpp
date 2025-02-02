@@ -8,6 +8,7 @@
  */
 
 #include "lh_console.hpp"
+#include <csignal>
 #include <cstddef>
 #include <cstring>
 #include <unistd.h>
@@ -66,15 +67,16 @@ lighthouse_console::~lighthouse_console()
 	if (process_running) {
 		std::lock_guard<std::mutex> lock(console_mutex);
 
-		if (write(stdin_pipe[1], "exit\n", 5) < 0) {
-			LHC_WARN("Failed to write exit command: %s", strerror(errno));
-		}
+		// Force kill the process
+		kill(child_pid, SIGTERM);
 
-		close(stdin_pipe[1]);
-		close(stdout_pipe[0]);
-
+		// Wait for it to finish
 		int status;
 		waitpid(child_pid, &status, 0);
+
+		// Close pipes
+		close(stdin_pipe[1]);
+		close(stdout_pipe[0]);
 		process_running = false;
 	}
 }

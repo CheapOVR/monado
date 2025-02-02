@@ -124,6 +124,8 @@ Context::~Context()
 {
 	for (vr::IServerTrackedDeviceProvider *const &provider : providers)
 		provider->Cleanup();
+
+	delete svrs->ctx->console;
 }
 
 /***** IVRDriverContext methods *****/
