@@ -136,6 +136,18 @@ public:
 	void
 	add_haptic_event(vr::VREvent_HapticVibration_t event);
 
+	Settings &
+	get_settings()
+	{
+		return settings;
+	}
+
+	const Settings &
+	get_settings() const
+	{
+		return settings;
+	}
+
 	void
 	Log(const char *pchLogMessage) override;
 
