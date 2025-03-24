@@ -666,6 +666,8 @@ get_matched_xrpath(struct oxr_binding *b, const struct oxr_action_ref *act)
 	return preferred_path;
 }
 
+
+
 static void
 get_binding(struct oxr_logger *log,
             struct oxr_sink_logger *slog,
@@ -739,7 +741,7 @@ get_binding(struct oxr_logger *log,
 	    log,                            // log
 	    profile,                        // p
 	    act_ref->act_key,               // key
-	    ARRAY_SIZE(binding_points),     // max_bounding_count
+	    ARRAY_SIZE(binding_points),     // max_binding_count
 	    binding_points,                 // out_bindings
 	    &binding_count);                // out_binding_count
 	if (binding_count == 0) {
