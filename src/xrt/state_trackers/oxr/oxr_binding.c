@@ -247,6 +247,9 @@ add_by_component(struct oxr_logger *log,
 			for (uint32_t y = 0; y < b->path_count; y++) {
 				if (b->paths[y] == path) {
 					path_found = true;
+					// we preserve the info which path the app selected instead of pretending it
+					// selected /click, /value, etc. if it did not
+					preferred_path_index = y;
 				}
 
 				const char *str;
@@ -254,10 +257,6 @@ add_by_component(struct oxr_logger *log,
 				oxr_path_get_string(log, inst, b->paths[y], &str, &len);
 				if (ends_with(str, components[component_index])) {
 					component_found = true;
-
-					// Set the preferred path index to the path that has the component. Note that
-					// the code below only applies it when path_found is also true.
-					preferred_path_index = y;
 				}
 			}
 
