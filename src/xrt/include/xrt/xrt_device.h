@@ -235,6 +235,15 @@ enum xrt_device_feature_type
 };
 
 /*!
+ * Output limits of a particular device
+ */
+struct xrt_output_limits
+{
+	//! The sample rate of the device's haptic PCM support, 0 if haptic PCM is not supported.
+	float haptic_pcm_sample_rate;
+};
+
+/*!
  * @interface xrt_device
  *
  * A single HMD or input device.
@@ -416,6 +425,14 @@ struct xrt_device
 	 * @see xrt_output_name
 	 */
 	void (*set_output)(struct xrt_device *xdev, enum xrt_output_name name, const union xrt_output_value *value);
+
+	/*!
+	 * Gets limits of this devices outputs.
+	 *
+	 * @param[in] xdev           The device.
+	 * @param[out] limits        The returned limits.
+	 */
+	void (*get_output_limits)(struct xrt_device *xdev, struct xrt_output_limits *limits);
 
 	/*!
 	 * Begin a plane detection request
@@ -711,6 +728,17 @@ static inline void
 xrt_device_set_output(struct xrt_device *xdev, enum xrt_output_name name, const union xrt_output_value *value)
 {
 	xdev->set_output(xdev, name, value);
+}
+
+static inline void
+xrt_device_get_output_limits(struct xrt_device *xdev, struct xrt_output_limits *limits)
+{
+	if (xdev->get_output_limits) {
+		xdev->get_output_limits(xdev, limits);
+	} else {
+		// set to defaults
+		memset(limits, 0, sizeof(*limits));
+	}
 }
 
 /*!
