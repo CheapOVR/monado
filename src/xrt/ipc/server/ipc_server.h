@@ -368,6 +368,15 @@ struct ipc_server
 	// Should we exit when a client disconnects.
 	bool exit_on_disconnect;
 
+	// Should we exit when no clients are connected.
+	bool exit_when_idle;
+
+	// Timestamp when last client disconnected (for exit_when_idle delay)
+	uint64_t last_client_disconnect_ns;
+
+	// How long to wait after all clients disconnect before exiting (in nanoseconds)
+	uint64_t exit_when_idle_delay_ns;
+
 	enum u_logging_level log_level;
 
 	struct ipc_thread threads[IPC_MAX_CLIENTS];
@@ -381,6 +390,9 @@ struct ipc_server
 	{
 		int active_client_index;
 		int last_active_client_index;
+
+		// Counter for total number of connected clients
+		uint32_t connected_client_count;
 
 		struct os_mutex lock;
 	} global_state;

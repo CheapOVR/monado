@@ -35,6 +35,29 @@
  *
  */
 
+static void *
+delayed_exit_thread(void *_server)
+{
+	struct ipc_server *s = (struct ipc_server *)_server;
+
+	// Sleep for the delay duration
+	os_nanosleep(s->exit_when_idle_delay_ns);
+
+	// Check if we still have no clients after the delay
+	os_mutex_lock(&s->global_state.lock);
+	bool should_exit =
+	    (s->exit_when_idle && s->global_state.connected_client_count == 0 && s->last_client_disconnect_ns > 0);
+	os_mutex_unlock(&s->global_state.lock);
+
+	if (should_exit) {
+		IPC_INFO(s, "All clients disconnected for %u milliseconds, shutting down.",
+		         (unsigned int)(s->exit_when_idle_delay_ns / U_TIME_1MS_IN_NS));
+		s->running = false;
+	}
+
+	return NULL;
+}
+
 static void
 common_shutdown(volatile struct ipc_client_state *ics)
 {
@@ -50,6 +73,9 @@ common_shutdown(volatile struct ipc_client_state *ics)
 	ics->server->threads[ics->server_thread_index].state = IPC_THREAD_STOPPING;
 	ics->server_thread_index = -1;
 	memset((void *)&ics->client_state, 0, sizeof(struct ipc_app_state));
+
+	// Decrement the connected client counter
+	ics->server->global_state.connected_client_count--;
 
 	os_mutex_unlock(&ics->server->global_state.lock);
 
@@ -116,6 +142,15 @@ common_shutdown(volatile struct ipc_client_state *ics)
 	if (ics->server->exit_on_disconnect) {
 		ics->server->running = false;
 	}
+	// Should we stop when all clients disconnect?
+	if (ics->server->exit_when_idle && ics->server->global_state.connected_client_count == 0) {
+		ics->server->last_client_disconnect_ns = os_monotonic_get_ns();
+
+		struct os_thread thread;
+		os_thread_start(&thread, delayed_exit_thread, (void *)ics->server);
+		// We intentionally don't join this thread - it's fire and forget
+	}
+
 
 	ipc_server_deactivate_session(ics);
 }
