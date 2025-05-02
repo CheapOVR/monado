@@ -20,6 +20,10 @@
 #include "simulated/simulated_interface.h"
 #endif
 
+#ifdef XRT_BUILD_DRIVER_CHEAPOVR
+#include "cheapovr/cheapovr_interface.h"
+#endif
+
 #ifdef XRT_BUILD_DRIVER_HDK
 #include "hdk/hdk_interface.h"
 #endif
@@ -178,6 +182,9 @@ struct xrt_prober_entry target_entry_list[] = {
     {PSMV_VID, PSMV_PID_ZCM1, psmv_found, "PS Move Controller (ZCM1)", "psmv"},
     {PSMV_VID, PSMV_PID_ZCM2, psmv_found, "PS Move Controller (ZCM2)", "psmv"},
 #endif // XRT_BUILD_DRIVER_PSMV
+#ifdef XRT_BUILD_DRIVER_CHEAPOVR
+    {CHPVR_VID, CHPVR_PID, chpvr_found, "CheapOVR", "cheapovr"},
+#endif // XRT_BUILD_DRIVER_CHEAPOVR
 
 #ifdef XRT_BUILD_DRIVER_PSSENSE
     {PSSENSE_VID, PSSENSE_PID_LEFT, pssense_found, "PlayStation VR2 Sense Controller (L)", "pssense"},

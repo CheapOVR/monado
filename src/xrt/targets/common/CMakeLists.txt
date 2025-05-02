@@ -74,6 +74,11 @@ endif()
 
 target_link_libraries(target_lists PRIVATE drv_cemu)
 
+if(XRT_BUILD_DRIVER_CHEAPOVR)
+	target_link_libraries(target_lists PRIVATE drv_cheapovr)
+endif()
+
+
 if(XRT_BUILD_DRIVER_DAYDREAM)
 	target_link_libraries(target_lists PRIVATE drv_daydream)
 endif()

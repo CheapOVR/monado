@@ -319,6 +319,7 @@ option_with_deps(XRT_BUILD_DRIVER_DAYDREAM "Enable the Google Daydream View cont
 option_with_deps(XRT_BUILD_DRIVER_DEPTHAI "DepthAI" DEPENDS depthai_FOUND)
 option_with_deps(XRT_BUILD_DRIVER_EUROC "Enable EuRoC dataset driver for SLAM evaluation" DEPENDS XRT_HAVE_OPENCV "NOT MSVC")
 option_with_deps(XRT_BUILD_DRIVER_HANDTRACKING "Enable Camera Hand Tracking driver" DEPENDS XRT_MODULE_MERCURY_HANDTRACKING)
+option_with_deps(XRT_BUILD_DRIVER_CHEAPOVR "Enable CheapOVR driver" DEPENDS XRT_HAVE_INTERNAL_HID)
 option_with_deps(XRT_BUILD_DRIVER_TWRAP "Enable Tracking Wrapper drivers" "NOT ANDROID") # only depends on imu
 option_with_deps(XRT_BUILD_DRIVER_HDK "Enable HDK driver" DEPENDS XRT_HAVE_INTERNAL_HID)
 option_with_deps(XRT_BUILD_DRIVER_HYDRA "Enable Hydra driver" DEPENDS XRT_HAVE_INTERNAL_HID)
@@ -411,6 +412,7 @@ list(
 	AVAILABLE_DRIVERS
 	"ANDROID"
 	"ARDUINO"
+	"CHEAPOVR"
 	"DAYDREAM"
 	"SIMULATED"
 	"HANDTRACKING"
@@ -639,6 +641,7 @@ message(STATUS "#    FEATURE_WINDOW_PEEK:                           ${XRT_FEATUR
 message(STATUS "#")
 message(STATUS "#    DRIVER_ANDROID:              ${XRT_BUILD_DRIVER_ANDROID}")
 message(STATUS "#    DRIVER_ARDUINO:              ${XRT_BUILD_DRIVER_ARDUINO}")
+message(STATUS "#    DRIVER_CHEAPOVR:             ${XRT_BUILD_DRIVER_CHEAPOVR}")
 message(STATUS "#    DRIVER_DAYDREAM:             ${XRT_BUILD_DRIVER_DAYDREAM}")
 message(STATUS "#    DRIVER_DEPTHAI:              ${XRT_BUILD_DRIVER_DEPTHAI}")
 message(STATUS "#    DRIVER_EUROC:                ${XRT_BUILD_DRIVER_EUROC}")
