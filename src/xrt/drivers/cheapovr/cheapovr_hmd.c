@@ -183,6 +183,9 @@ cheapovr_hmd_create(struct os_hid_device *dev)
 	hmd->center = center;
 	hmd->base.hmd->view_count = 2;
 
+	snprintf(hmd->base.str, XRT_DEVICE_NAME_LEN, "CheapOVR Head Tracker");
+	snprintf(hmd->base.serial, XRT_DEVICE_NAME_LEN, "CheapOVR Head Tracker");
+
 	// Setup input.
 	hmd->base.inputs[0].name = XRT_INPUT_GENERIC_HEAD_POSE;
 
